@@ -33,14 +33,29 @@ namespace NeosModConfigurationExample
             Harmony.DEBUG = true;
 
             Type type = typeof(DynamicVariableSpace.ValueManager<>);
-            MethodInfo original = AccessTools.DeclaredMethod(type, "SetValue");
-            Debug($"original.IsGenericMethod // {original.IsGenericMethod}");
-            Debug($"original.IsGenericMethodDefinition // {original.IsGenericMethodDefinition}");
+            Debug($"type: {type}");
+
+            // get the generic method
+            MethodInfo genericOriginal = AccessTools.DeclaredMethod(type, "SetValue");
+            if (genericOriginal == null)
+            {
+                Error("genericOriginal is null");
+                return;
+            }
+            Debug($"genericOriginal: {genericOriginal}");
+            Debug($"genericOriginal.IsGenericMethod // {genericOriginal.IsGenericMethod}");
+            Debug($"genericOriginal.IsGenericMethodDefinition // {genericOriginal.IsGenericMethodDefinition}");
+            
+            // close the generic method
+            MethodInfo original = genericOriginal.MakeGenericMethod(new Type[] { typeof(object) });
             if (original == null)
             {
                 Error("original is null");
                 return;
             }
+            Debug($"original: {original}");
+            Debug($"original.IsGenericMethod // {original.IsGenericMethod}");
+            Debug($"original.IsGenericMethodDefinition // {original.IsGenericMethodDefinition}");
 
             MethodInfo patch = AccessTools.DeclaredMethod(typeof(NeosModTest), nameof(DoNothingPostfix));
             if (patch == null)
