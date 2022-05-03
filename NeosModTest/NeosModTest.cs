@@ -1,11 +1,10 @@
-﻿using NeosModLoader;
+﻿using FrooxEngine;
+using HarmonyLib;
+using NeosModLoader;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using HarmonyLib;
-using FrooxEngine;
-using System.Reflection.Emit;
 
 namespace NeosModConfigurationExample
 {
@@ -31,10 +30,12 @@ namespace NeosModConfigurationExample
         }
         private static void PatchSomething(Harmony harmony)
         {
+            Harmony.DEBUG = true;
 
-            Type patchedType = typeof(DynamicVariableSpace.ValueManager<Camera>);
-
-            MethodInfo original = AccessTools.DeclaredMethod(patchedType, "SetValue", new Type[] { typeof(Camera) }, new Type[] { typeof(Camera) });
+            Type type = typeof(DynamicVariableSpace.ValueManager<>);
+            MethodInfo original = AccessTools.DeclaredMethod(type, "SetValue");
+            Debug($"original.IsGenericMethod // {original.IsGenericMethod}");
+            Debug($"original.IsGenericMethodDefinition // {original.IsGenericMethodDefinition}");
             if (original == null)
             {
                 Error("original is null");
@@ -49,7 +50,7 @@ namespace NeosModConfigurationExample
             }
 
             harmony.Patch(original, postfix: new HarmonyMethod(patch));
-            Debug($"Method [{patchedType} :: {original}] patched!");
+            Debug($"Method [{type} :: {original}] patched!");
         }
 
         private static IEnumerable<CodeInstruction> DoNothingTranspiler(IEnumerable<CodeInstruction> instructions)
@@ -67,7 +68,45 @@ namespace NeosModConfigurationExample
 
         private static void DoNothingPostfix()
         {
-            Msg("DoNothingPostFix has run");
+            Warn("DoNothingPostFix has run");
+        }
+
+        private static void DoNothingPostfix2(object[] __args)
+        {
+            if (__args != null)
+            {
+                IEnumerable<string> argData = __args.Select(arg => $"{arg?.GetType()}: {arg}");
+                Msg($"DoNothingPostFix has run with args [{string.Join(", ", argData)}]");
+            }
+            else
+            {
+                Warn($"DoNothingPostFix has run with args NULL");
+            }
+        }
+
+        private static void LogMatchingTypes()
+        {
+            Type genericType = typeof(DynamicVariableSpace.ValueManager<>);
+            Msg($"Logging types matching {genericType}:");
+
+            IEnumerable<Type> types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => type.IsGenericType)
+                .Where(type => genericType.Equals(type.GetGenericTypeDefinition()));
+
+            foreach (Type type in types)
+            {
+                Msg($"Type matching {genericType}: {type}");
+            }
+        }
+
+        private static void LogAssemblies()
+        {
+            Debug("Assembly list:");
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                Debug($"- {assembly}");
+            }
         }
     }
 }
