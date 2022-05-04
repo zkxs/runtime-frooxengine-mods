@@ -13,7 +13,7 @@ namespace NeosModConfigurationExample
         public override string Name => "NeosModTest";
         public override string Author => "runtime";
         public override string Version => "1.0.0";
-        public override string Link => "https://github.com/zkxs/NeosModConfigurationExample";
+        public override string Link => "https://github.com/zkxs/NeosModTest";
 
         // this override lets us change optional settings in our configuration definition
         public override void DefineConfiguration(ModConfigurationDefinitionBuilder builder)
@@ -27,9 +27,13 @@ namespace NeosModConfigurationExample
         {
             Harmony harmony = new Harmony("dev.zkxs.neosmodtest");
             PatchSomething(harmony);
+
+            Msg($"Engine.Current.PhysicalProcessorCount = {Engine.Current.PhysicalProcessorCount}");
+            Msg($"Engine.Current.ProcessorCount = {Engine.Current.ProcessorCount}");
         }
         private static void PatchSomething(Harmony harmony)
         {
+            /*
             Harmony.DEBUG = true;
 
             Type type = typeof(DynamicVariableSpace.ValueManager<>);
@@ -66,6 +70,7 @@ namespace NeosModConfigurationExample
 
             harmony.Patch(original, postfix: new HarmonyMethod(patch));
             Debug($"Method [{type} :: {original}] patched!");
+            */
         }
 
         private static IEnumerable<CodeInstruction> DoNothingTranspiler(IEnumerable<CodeInstruction> instructions)
