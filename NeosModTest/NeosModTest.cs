@@ -1,4 +1,5 @@
 ﻿using FrooxEngine;
+using FrooxEngine.LogiX.ProgramFlow;
 using HarmonyLib;
 using NeosModLoader;
 using System;
@@ -27,31 +28,16 @@ namespace NeosModConfigurationExample
         {
             Harmony harmony = new Harmony("dev.zkxs.neosmodtest");
             PatchSomething(harmony);
-
-            Msg($"Engine.Current.PhysicalProcessorCount = {Engine.Current.PhysicalProcessorCount}");
-            Msg($"Engine.Current.ProcessorCount = {Engine.Current.ProcessorCount}");
         }
         private static void PatchSomething(Harmony harmony)
         {
-            /*
             Harmony.DEBUG = true;
 
-            Type type = typeof(DynamicVariableSpace.ValueManager<>);
+            Type type = typeof(DynamicImpulseTriggerWithValue<Slot>);
             Debug($"type: {type}");
-
-            // get the generic method
-            MethodInfo genericOriginal = AccessTools.DeclaredMethod(type, "SetValue");
-            if (genericOriginal == null)
-            {
-                Error("genericOriginal is null");
-                return;
-            }
-            Debug($"genericOriginal: {genericOriginal}");
-            Debug($"genericOriginal.IsGenericMethod // {genericOriginal.IsGenericMethod}");
-            Debug($"genericOriginal.IsGenericMethodDefinition // {genericOriginal.IsGenericMethodDefinition}");
             
-            // close the generic method
-            MethodInfo original = genericOriginal.MakeGenericMethod(new Type[] { typeof(object) });
+            // close the method
+            MethodInfo original = AccessTools.DeclaredMethod(type, nameof(DynamicImpulseTriggerWithValue<Slot>.Run));
             if (original == null)
             {
                 Error("original is null");
@@ -61,16 +47,18 @@ namespace NeosModConfigurationExample
             Debug($"original.IsGenericMethod // {original.IsGenericMethod}");
             Debug($"original.IsGenericMethodDefinition // {original.IsGenericMethodDefinition}");
 
-            MethodInfo patch = AccessTools.DeclaredMethod(typeof(NeosModTest), nameof(DoNothingPostfix));
+            MethodInfo patch = AccessTools.DeclaredMethod(typeof(NeosModTest), nameof(DoNothingTranspiler));
             if (patch == null)
             {
                 Error("patch is null, which means I really fucked up");
                 return;
             }
 
-            harmony.Patch(original, postfix: new HarmonyMethod(patch));
+            harmony.Patch(original, transpiler: new HarmonyMethod(patch));
             Debug($"Method [{type} :: {original}] patched!");
-            */
+
+
+            Harmony.DEBUG = false;
         }
 
         private static IEnumerable<CodeInstruction> DoNothingTranspiler(IEnumerable<CodeInstruction> instructions)
@@ -80,6 +68,8 @@ namespace NeosModConfigurationExample
 
             for (int i = 0; i < codes.Count; i++)
             {
+             
+
                 Debug($"{i}: {codes[i]}");
             }
 
