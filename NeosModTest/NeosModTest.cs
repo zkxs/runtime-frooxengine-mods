@@ -1,5 +1,4 @@
 ﻿using FrooxEngine;
-using FrooxEngine.LogiX.ProgramFlow;
 using HarmonyLib;
 using NeosModLoader;
 using System;
@@ -33,28 +32,24 @@ namespace NeosModConfigurationExample
         {
             Harmony.DEBUG = true;
 
-            Type type = typeof(DynamicImpulseTriggerWithValue<Slot>);
+            Type type = typeof(DiscordPlatformConnector);
             Debug($"type: {type}");
             
-            // close the method
-            MethodInfo original = AccessTools.DeclaredMethod(type, nameof(DynamicImpulseTriggerWithValue<Slot>.Run));
+            // get the method
+            MethodInfo original = AccessTools.DeclaredMethod(type, nameof(DiscordPlatformConnector.Initialize));
             if (original == null)
             {
                 Error("original is null");
                 return;
             }
-            Debug($"original: {original}");
-            Debug($"original.IsGenericMethod // {original.IsGenericMethod}");
-            Debug($"original.IsGenericMethodDefinition // {original.IsGenericMethodDefinition}");
-
-            MethodInfo patch = AccessTools.DeclaredMethod(typeof(NeosModTest), nameof(DoNothingTranspiler));
+            MethodInfo patch = AccessTools.DeclaredMethod(typeof(NeosModTest), nameof(DebugPostfix));
             if (patch == null)
             {
                 Error("patch is null, which means I really fucked up");
                 return;
             }
 
-            harmony.Patch(original, transpiler: new HarmonyMethod(patch));
+            harmony.Patch(original, postfix: new HarmonyMethod(patch));
             Debug($"Method [{type} :: {original}] patched!");
 
 
@@ -81,16 +76,16 @@ namespace NeosModConfigurationExample
             Warn("DoNothingPostFix has run");
         }
 
-        private static void DoNothingPostfix2(object[] __args)
+        private static void DebugPostfix(object[] __args)
         {
             if (__args != null)
             {
                 IEnumerable<string> argData = __args.Select(arg => $"{arg?.GetType()}: {arg}");
-                Msg($"DoNothingPostFix has run with args [{string.Join(", ", argData)}]");
+                Msg($"DebugPostfix has run with args [{string.Join(", ", argData)}]");
             }
             else
             {
-                Warn($"DoNothingPostFix has run with args NULL");
+                Warn($"DebugPostfix has run with args NULL");
             }
         }
 
