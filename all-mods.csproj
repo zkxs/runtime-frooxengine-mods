@@ -1,4 +1,4 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
 
 	<!-- Builds mod *.csproj files under this repository. -->
 	<ItemGroup>
@@ -6,8 +6,8 @@
 	</ItemGroup>
 
 	<Target Name="Build">
-		<MSBuild Projects="NeosModLoader/NeosModLoader.csproj" Targets="Build" />
-		<MSBuild Projects="@(ProjectFiles)" Targets="Build" />
+		<MSBuild Projects="NeosModLoader/NeosModLoader.csproj" Targets="Rebuild" />
+		<MSBuild Projects="@(ProjectFiles)" Targets="Rebuild" />
 	</Target>
 
 	<Target Name="Rebuild">
