@@ -17,7 +17,7 @@ namespace NeosModLoader.JsonConverters
 			Type underlyingType = Enum.GetUnderlyingType(objectType);
 			if (TryConvert(reader!.Value!, underlyingType, out object? deserialized))
 			{
-				Logger.DebugFuncInternal(() => $"Deserializing a BaseX type: {objectType} from a {reader!.Value!.GetType()}");
+				Logger.DebugFuncInternal(() => $"Deserializing an Elements.Core type: {objectType} from a {reader!.Value!.GetType()}");
 				return deserialized!;
 			}
 
@@ -27,7 +27,7 @@ namespace NeosModLoader.JsonConverters
 				return Enum.Parse(objectType, serialized);
 			}
 
-			throw new ArgumentException($"Could not deserialize a BaseX type: {objectType} from a {reader?.Value?.GetType()}. Expected underlying type was {underlyingType}");
+			throw new ArgumentException($"Could not deserialize an Elements.Core type: {objectType} from a {reader?.Value?.GetType()}. Expected underlying type was {underlyingType}");
 		}
 
 		public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)

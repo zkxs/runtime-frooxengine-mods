@@ -1,6 +1,6 @@
 ﻿//#define DEBUG_SPAM // enable this for incredible debug spam
 
-using BaseX;
+using Elements.Core;
 using CloudX.Shared;
 using FrooxEngine;
 using HarmonyLib;
@@ -92,7 +92,7 @@ namespace CloudHomeAccessLevel
 
 
             /* We are looking for the following:
-             * 
+             *
              * IL_0172: call         bool FrooxEngine.Userspace::get_AnnounceHomeOnLAN()
              * IL_0177: brtrue.s     IL_017c
              * IL_0179: ldc.i4.0
@@ -100,7 +100,7 @@ namespace CloudHomeAccessLevel
              * IL_017c: ldc.i4.1
              * IL_017d: newobj       instance void valuetype [mscorlib]System.Nullable`1<valuetype [CloudX.Shared]CloudX.Shared.SessionAccessLevel>::.ctor(!0)
              * IL_0182: stfld        valuetype [mscorlib]System.Nullable`1<valuetype [CloudX.Shared]CloudX.Shared.SessionAccessLevel> FrooxEngine.WorldStartSettings::DefaultAccessLevel
-             * 
+             *
              * That code is checking if Userspace.AnnounceHomeOnLAN() is true, and if so it's loading SessionAccessLevel.LAN onto the stack.
              * Otherwise, it's loading SessionAccessLevel.Private onto the stack.
              * Finally, it's storing that into the DefaultAccessLevel field of a WorldStartSettings.
