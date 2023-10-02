@@ -1,3 +1,7 @@
+// This file is part of NeosModLoader and is licensed under the GNU LGPL v3.0.
+// See LICENSE.txt file for full text.
+// Copyright © 2023 Michael Ripley & Neos Modding Group contributors.
+
 using System;
 using System.Collections.Generic;
 

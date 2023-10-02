@@ -1,3 +1,7 @@
+// This file is part of MotionBlurDisable and is licensed under the GNU GPL v3.0.
+// See LICENSE.txt file for full text.
+// Copyright © 2023 Michael Ripley
+
 using HarmonyLib;
 using NeosModLoader;
 using System;
@@ -9,9 +13,10 @@ namespace MotionBlurDisable
 {
 	public class MotionBlurDisable : NeosMod
 	{
+		internal const string VERSION = "1.1.0";
 		public override string Name => "MotionBlurDisable";
 		public override string Author => "runtime";
-		public override string Version => "1.1.0";
+		public override string Version => VERSION;
 		public override string Link => "https://github.com/zkxs/MotionBlurDisable";
 
 		private static bool _first_trigger = false;

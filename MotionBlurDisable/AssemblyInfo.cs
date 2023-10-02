@@ -7,9 +7,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Runtime Evil Inc.")]
 [assembly: AssemblyDescription("")]
 [assembly: ComVisible(false)]
-//[assembly: AssemblyVersion(NeosLocomotionRename.NeosLocomotionRename.VERSION)]
-//[assembly: AssemblyFileVersion(NeosLocomotionRename.NeosLocomotionRename.VERSION)]
-
-//TODO: remove
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion(MotionBlurDisable.MotionBlurDisable.VERSION)]
+[assembly: AssemblyFileVersion(MotionBlurDisable.MotionBlurDisable.VERSION)]

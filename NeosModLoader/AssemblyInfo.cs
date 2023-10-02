@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NeosModLoader")]
 [assembly: AssemblyProduct("NeosModLoader")]
 [assembly: AssemblyCompany("Runtime Evil Inc.")]
-[assembly: AssemblyCopyright("Copyright © 2021")]
+[assembly: AssemblyCopyright("Copyright © 2023")]
 [assembly: AssemblyDescription("")]
 [assembly: ComVisible(false)]
 [assembly: AssemblyVersion(NeosModLoader.ModLoader.VERSION_CONSTANT)]

@@ -1,3 +1,7 @@
+// This file is part of PlatformSpoof and is licensed under the GNU GPL v3.0.
+// See LICENSE.txt file for full text.
+// Copyright © 2023 Michael Ripley
+
 using FrooxEngine;
 using HarmonyLib;
 using NeosModLoader;

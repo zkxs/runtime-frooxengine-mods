@@ -1,3 +1,7 @@
+// This file is part of CloudHomeAccessLevel and is licensed under the GNU GPL v3.0.
+// See LICENSE.txt file for full text.
+// Copyright © 2023 Michael Ripley
+
 //#define DEBUG_SPAM // enable this for incredible debug spam
 
 using Elements.Core;
@@ -15,9 +19,10 @@ namespace CloudHomeAccessLevel
 {
 	public class CloudHomeAccessLevel : NeosMod
 	{
+		internal const string VERSION = "1.1.0";
 		public override string Name => "CloudHomeAccessLevel";
 		public override string Author => "runtime";
-		public override string Version => "1.1.0";
+		public override string Version => VERSION;
 		public override string Link => "https://github.com/zkxs/NeosCloudHomeAccessLevel";
 
 		[AutoRegisterConfigKey]
