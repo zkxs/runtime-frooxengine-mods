@@ -1,0 +1,62 @@
+<Project>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<AppDesignerFolder>Properties</AppDesignerFolder>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<TargetFramework>net462</TargetFramework>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<FileAlignment>512</FileAlignment>
+		<LangVersion>9.0</LangVersion>
+		<BaseOutputPath>..\bin</BaseOutputPath>
+		<Nullable>enable</Nullable>
+		<Deterministic>true</Deterministic>
+		<GamePath>$(MSBuildThisFileDirectory)NeosVR</GamePath>
+		<GamePath Condition="Exists('G:\Steam\steamapps\common\Resonite\')">C:\Program Files (x86)\Steam\steamapps\common\NeosVR\</GamePath>
+		<GameRefsPath>$(GamePath)Resonite_Data/Managed/</GameRefsPath>
+		<CopyLocal>false</CopyLocal>
+		<CopyToMods Condition="'$(CopyToMods)'==''">true</CopyToMods>
+		<DebugSymbols Condition="'$(Configuration)'=='Release'">false</DebugSymbols>
+		<DebugType Condition="'$(Configuration)'=='Release'">None</DebugType>
+		<DebugType Condition="'$(Configuration)'=='Debug'">embedded</DebugType>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Lib.Harmony" Version="2.2.2" />
+
+		<Reference Include="FrooxEngine">
+			<HintPath>$(GameRefsPath)FrooxEngine.dll</HintPath>
+		</Reference>
+		<!-- previously known as BaseX -->
+		<Reference Include="Elements.Core">
+			<HintPath>$(GameRefsPath)Elements.Core.dll</HintPath>
+		</Reference>
+		<!-- previously known as CloudX.Shared -->
+		<Reference Include="SkyFrost.Base">
+			<HintPath>$(GameRefsPath)SkyFrost.Base.dll</HintPath>
+		</Reference>
+		<!-- previously known as CodeX -->
+		<Reference Include="Elements.Assets">
+			<HintPath>$(GameRefsPath)Elements.Assets.dll</HintPath>
+		</Reference>
+
+		<Reference Include="System" />
+		<Reference Include="System.Core" />
+		<Reference Include="System.Xml.Linq" />
+		<Reference Include="System.Data.DataSetExtensions" />
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="System.Data" />
+		<Reference Include="System.Xml" />
+	</ItemGroup>
+
+	<!-- make all references non-private, so they won't be copied to the output folder -->
+	<Target Name="ClearReferenceCopyLocalPaths" AfterTargets="ResolveAssemblyReferences">
+		<ItemGroup>
+			<ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(CopyToMods)'=='true'">
+		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(GamePath)nml_mods" />
+		<Message Text="Copied $(TargetFileName) to $(GamePath)nml_mods" Importance="high" />
+	</Target>
+</Project>
