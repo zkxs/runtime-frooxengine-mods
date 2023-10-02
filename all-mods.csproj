@@ -1,16 +1,18 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!-- Builds all other *.csproj files under this repository. -->
-  <ItemGroup>
-    <ProjectFiles Include="**/*.csproj" Exclude="all-mods.csproj" />
-  </ItemGroup>
+	<!-- Builds mod *.csproj files under this repository. -->
+	<ItemGroup>
+		<ProjectFiles Include="**/*.csproj" Exclude="NeosModLoader.csproj;all-mods.csproj" />
+	</ItemGroup>
 
-  <Target Name="Build">
-    <MSBuild Projects="@(ProjectFiles)" Targets="Rebuild" />
-  </Target>
+	<Target Name="Build">
+		<MSBuild Projects="NeosModLoader/NeosModLoader.csproj" Targets="Rebuild" />
+		<MSBuild Projects="@(ProjectFiles)" Targets="Rebuild" />
+	</Target>
 
-  <Target Name="Restore">
-    <MSBuild Projects="@(ProjectFiles)" Targets="Restore" />
-  </Target>
+	<Target Name="Restore">
+		<MSBuild Projects="NeosModLoader/NeosModLoader.csproj" Targets="Restore" />
+		<MSBuild Projects="@(ProjectFiles)" Targets="Restore" />
+	</Target>
 
 </Project>

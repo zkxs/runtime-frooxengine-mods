@@ -1,19 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNamespace>NeosModLoader</RootNamespace>
-		<Headless Condition="'$(Headless)'!='true'">false</Headless>
-		<AssemblyName>NeosModLoader</AssemblyName>
-		<AssemblyTitle Condition="'$(Headless)'=='false'">NeosModLoader</AssemblyTitle>
-		<AssemblyTitle Condition="'$(Headless)'=='true'">NeosModLoaderHeadless</AssemblyTitle>
-		<AssemblyFileName>$(AssemblyTitle).dll</AssemblyFileName>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<CopyToMods>false</CopyToMods>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" Condition="'$(Headless)'=='true'" />
-		<Reference Include="Newtonsoft.Json" Condition="'$(Headless)'=='false'">
-			<HintPath>$(GameRefsPath)/Newtonsoft.Json.dll</HintPath>
+		<Reference Include="Newtonsoft.Json">
+			<HintPath>$(GameRefsPath)Newtonsoft.Json.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

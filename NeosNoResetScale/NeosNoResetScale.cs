@@ -42,10 +42,10 @@ namespace NeosNoResetScale
             }
 
             // where we start reading IL from
-            MethodInfo openContextMenu = AccessTools.DeclaredMethod(typeof(CommonTool), "OpenContextMenu");
+            MethodInfo openContextMenu = AccessTools.DeclaredMethod(typeof(InteractionHandler), "OpenContextMenu");
             if (openContextMenu == null)
             {
-                Error("Could not find method CommonTool.OpenContextMenu(*)");
+                Error("Could not find method InteractionHandler.OpenContextMenu(*)");
                 return;
             }
 
@@ -53,7 +53,7 @@ namespace NeosNoResetScale
             MethodInfo asyncMethodConstructor = FindAsyncMethod(PatchProcessor.GetOriginalInstructions(openContextMenu));
             if (asyncMethodConstructor == null)
             {
-                Error("Could not find target async block constructor in CommonTool.OpenContextMenu(*)");
+                Error("Could not find target async block constructor in InteractionHandler.OpenContextMenu(*)");
                 return;
             }
             Debug($"Found async method constructor: \"{asyncMethodConstructor.FullDescription()}\"");
@@ -70,10 +70,10 @@ namespace NeosNoResetScale
             MethodInfo asyncMethodBody = AccessTools.DeclaredMethod(asyncAttribute.StateMachineType, "MoveNext", new Type[] { });
             if (asyncMethodBody == null)
             {
-                Error("Could not find target async block in CommonTool.OpenContextMenu(*)");
+                Error("Could not find target async block in InteractionHandler.OpenContextMenu(*)");
                 return;
             }
-            // should be FrooxEngine.CommonTool.'<>c__DisplayClass333_0'.'<<OpenContextMenu>b__0>d'.MoveNext()
+            // should be FrooxEngine.InteractionHandler.'<>c__DisplayClass333_0'.'<<OpenContextMenu>b__0>d'.MoveNext()
             Debug($"Found async method: \"{asyncMethodBody.FullDescription()}\"");
 
             harmony.Patch(asyncMethodBody, transpiler: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(NeosNoResetScale), nameof(Transpiler))));

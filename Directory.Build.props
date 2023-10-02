@@ -7,11 +7,11 @@
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<FileAlignment>512</FileAlignment>
 		<LangVersion>9.0</LangVersion>
-		<BaseOutputPath>..\bin</BaseOutputPath>
+		<BaseOutputPath>../bin</BaseOutputPath>
 		<Nullable>enable</Nullable>
 		<Deterministic>true</Deterministic>
 		<GamePath>$(MSBuildThisFileDirectory)NeosVR</GamePath>
-		<GamePath Condition="Exists('G:\Steam\steamapps\common\Resonite\')">C:\Program Files (x86)\Steam\steamapps\common\NeosVR\</GamePath>
+		<GamePath Condition="Exists('G:\Steam\steamapps\common\Resonite\')">G:\Steam\steamapps\common\Resonite\</GamePath>
 		<GameRefsPath>$(GamePath)Resonite_Data/Managed/</GameRefsPath>
 		<CopyLocal>false</CopyLocal>
 		<CopyToMods Condition="'$(CopyToMods)'==''">true</CopyToMods>
@@ -39,6 +39,10 @@
 			<HintPath>$(GameRefsPath)Elements.Assets.dll</HintPath>
 		</Reference>
 
+		<Reference Include="NeosModLoader" Condition="'$(RootNamespace)'!='NeosModLoader'">
+			<HintPath>$(BaseOutputPath)/$(Configuration)/NeosModLoader.dll</HintPath>
+		</Reference>
+
 		<Reference Include="System" />
 		<Reference Include="System.Core" />
 		<Reference Include="System.Xml.Linq" />
@@ -56,7 +60,7 @@
 	</Target>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(CopyToMods)'=='true'">
-		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(GamePath)nml_mods" />
-		<Message Text="Copied $(TargetFileName) to $(GamePath)nml_mods" Importance="high" />
+		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(GamePath)rml_mods" />
+		<Message Text="Copied $(TargetFileName) to $(GamePath)rml_mods" Importance="high" />
 	</Target>
 </Project>

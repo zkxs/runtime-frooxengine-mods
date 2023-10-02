@@ -58,7 +58,7 @@ namespace NeosDesktopToolShortcutRemapper
         private static class HarmonyPatches
         {
             [HarmonyPrefix]
-            [HarmonyPatch(typeof(CommonTool), nameof(CommonTool.SpawnAndEquip))]
+            [HarmonyPatch(typeof(InteractionHandler), nameof(InteractionHandler.SpawnAndEquip))]
             private static void SpawnAndEquipPrefix(ref Uri uri)
             {
                 // check if the Uri is one that we're remapping (e.g. the default tool Uris)

@@ -7,12 +7,12 @@ namespace NeosModLoader.JsonConverters
 {
 	internal class NeosPrimitiveConverter : JsonConverter
 	{
-		private static readonly Assembly ELEMENTS_CORE = typeof(color).Assembly;
+		private static readonly Assembly ELEMENTS_CORE = typeof(colorX).Assembly;
 
 		public override bool CanConvert(Type objectType)
 		{
 			// handle all non-enum Neos Primitives in the Elements.Core assembly
-			return !objectType.IsEnum && ELEMENTS_CORE.Equals(objectType.Assembly) && Coder.IsNeosPrimitive(objectType);
+			return !objectType.IsEnum && ELEMENTS_CORE.Equals(objectType.Assembly) && Coder.IsEnginePrimitive(objectType);
 		}
 
 		public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>NeosModLoader</RootNamespace>
+		<AssemblyName>NeosModLoader</AssemblyName>
+		<AssemblyTitle>NeosModLoaderHeadless</AssemblyTitle>
+		<AssemblyFileName>$(AssemblyTitle).dll</AssemblyFileName>
+		<CopyToMods>false</CopyToMods>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+
+</Project>

@@ -653,19 +653,7 @@ namespace NeosModLoader
 		{
 			try
 			{
-				MethodInfo shutdown = AccessTools.DeclaredMethod(typeof(Engine), nameof(Engine.Shutdown));
-				if (shutdown == null)
-				{
-					Logger.ErrorInternal("Could not find method Engine.Shutdown(). Will not be able to autosave configs on close!");
-					return;
-				}
-				MethodInfo patch = AccessTools.DeclaredMethod(typeof(ModConfiguration), nameof(ShutdownHook));
-				if (patch == null)
-				{
-					Logger.ErrorInternal("Could not find method ModConfiguration.ShutdownHook(). Will not be able to autosave configs on close!");
-					return;
-				}
-				harmony.Patch(shutdown, prefix: new HarmonyMethod(patch));
+				Engine.Current.RegisterShutdownTask(Task.Run(ShutdownHook));
 			}
 			catch (Exception e)
 			{

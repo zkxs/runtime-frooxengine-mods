@@ -19,6 +19,7 @@ I've made a few noteworthy changes to the sorting order:
    3. Away Friends
    4. Busy Friends
    5. Offline Friends and Sent Requests
+   6. Unmigrated Friends
 3. Further ties broken by most recent message
 4. Even further ties broken by username alphabetical order
 
@@ -32,7 +33,8 @@ I've made a few noteworthy changes to the sorting order:
    5. Busy Friends
    6. Sent Requests (background color changed from gray to yellow!)
    7. Offline Friends
-   8. Search results
+   8. Unmigrated Friends
+   9. Search results
 3. Further ties broken by username alphabetical order
 
 ## Installation

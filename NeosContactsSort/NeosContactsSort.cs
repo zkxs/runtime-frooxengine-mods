@@ -11,9 +11,10 @@ namespace NeosContactsSort
 {
     public class NeosContactsSort : NeosMod
     {
+        internal const string VERSION = "1.2.0";
         public override string Name => "NeosContactsSort";
         public override string Author => "runtime";
-        public override string Version => "1.2.0";
+        public override string Version => VERSION;
         public override string Link => "https://github.com/zkxs/NeosContactsSort";
 
         public override void OnEngineInit()
@@ -29,8 +30,8 @@ namespace NeosContactsSort
         private static class HarmonyPatches
         {
             [HarmonyPrefix]
-            [HarmonyPatch(typeof(FriendsDialog), "OnCommonUpdate", new Type[] { })]
-            public static void FriendsDialogOnCommonUpdatePrefix(ref bool ___sortList, out bool __state)
+            [HarmonyPatch(typeof(ContactsDialog), "OnCommonUpdate", new Type[] { })]
+            public static void ContactsDialogOnCommonUpdatePrefix(ref bool ___sortList, out bool __state)
             {
                 // steal the sortList bool's value, and force it to false from Neos's perspective
                 __state = ___sortList;
@@ -38,8 +39,8 @@ namespace NeosContactsSort
             }
 
             [HarmonyPostfix]
-            [HarmonyPatch(typeof(FriendsDialog), "OnCommonUpdate", new Type[] { })]
-            public static void FriendsDialogOnCommonUpdatePostfix(bool __state, SyncRef<Slot> ____listRoot)
+            [HarmonyPatch(typeof(ContactsDialog), "OnCommonUpdate", new Type[] { })]
+            public static void ContactsDialogOnCommonUpdatePostfix(bool __state, SyncRef<Slot> ____listRoot)
             {
                 // if Neos would have sorted (but we prevented it)
                 if (__state)
@@ -47,41 +48,41 @@ namespace NeosContactsSort
                     // we need to sort
                     ____listRoot.Target.SortChildren((slot1, slot2) =>
                     {
-                        FriendItem? component1 = slot1.GetComponent<FriendItem>();
-                        FriendItem? component2 = slot2.GetComponent<FriendItem>();
-                        Friend? friend1 = component1?.Friend;
-                        Friend? friend2 = component2?.Friend;
+                        ContactItem? component1 = slot1.GetComponent<ContactItem>();
+                        ContactItem? component2 = slot2.GetComponent<ContactItem>();
+                        Contact? contact1 = component1?.Contact;
+                        Contact? contact2 = component2?.Contact;
 
                         // nulls go last
-                        if (friend1 != null && friend2 == null) return -1;
-                        if (friend1 == null && friend2 != null) return 1;
-                        if (friend1 == null && friend2 == null) return 0;
+                        if (contact1 != null && contact2 == null) return -1;
+                        if (contact1 == null && contact2 != null) return 1;
+                        if (contact1 == null && contact2 == null) return 0;
 
-                        // friends with unread messages come first
+                        // contacts with unread messages come first
                         int messageComparison = -component1!.HasMessages.CompareTo(component2!.HasMessages);
                         if (messageComparison != 0) return messageComparison;
 
                         // sort by online status
-                        int onlineStatusOrder = GetOrderNumber(friend1!).CompareTo(GetOrderNumber(friend2!));
+                        int onlineStatusOrder = GetOrderNumber(component1!).CompareTo(GetOrderNumber(component2!));
                         if (onlineStatusOrder != 0) return onlineStatusOrder;
 
-                        // neos bot comes first
-                        if (friend1!.FriendUserId == "U-Neos" && friend2!.FriendUserId != "U-Neos") return -1;
-                        if (friend2!.FriendUserId == "U-Neos" && friend1!.FriendUserId != "U-Neos") return 1;
+                        // resonite bot comes first
+                        if (contact1!.ContactUserId == "U-Resonite" && contact2!.ContactUserId != "U-Resonite") return -1;
+                        if (contact2!.ContactUserId == "U-Resonite" && contact1!.ContactUserId != "U-Resonite") return 1;
 
                         // sort by name
-                        return string.Compare(friend1!.FriendUsername, friend2!.FriendUsername, StringComparison.CurrentCultureIgnoreCase);
+                        return string.Compare(contact1!.ContactUsername, contact2!.ContactUsername, StringComparison.CurrentCultureIgnoreCase);
                     });
 
 #if DEBUG
                     Debug("BIG FRIEND DEBUG:");
                     foreach (Slot slot in ____listRoot.Target.Children)
                     {
-                        FriendItem? component = slot.GetComponent<FriendItem>();
-                        Friend? friend = component?.Friend;
-                        if (friend != null)
+                        ContactItem? component = slot.GetComponent<ContactItem>();
+                        Contact? contact = component?.Contact;
+                        if (contact != null)
                         {
-                            Debug($"  {GetOrderNumber(friend)}: \"{friend.FriendUsername}\" status={friend.FriendStatus} online={friend.UserStatus?.OnlineStatus} incoming={friend.IsAccepted}");
+                            Debug($"  {GetOrderNumber(component)}: \"{contact.ContactUsername}\" status={contact.ContactStatus} online={contact.ContactStatus?.OnlineStatus} incoming={contact.IsAccepted}");
                         }
                     }
 #endif
@@ -89,23 +90,24 @@ namespace NeosContactsSort
             }
 
             [HarmonyPostfix]
-            [HarmonyPatch(typeof(NeosUIStyle), nameof(NeosUIStyle.GetStatusColor), new Type[] { typeof(Friend), typeof(Engine) })]
-            public static void NeosUIStyleGetStatusColorPostfix(Friend friend, Engine engine, ref color __result)
+            [HarmonyPatch(typeof(LegacyUIStyle), nameof(LegacyUIStyle.GetStatusColor), new Type[] { typeof(Contact), typeof(ContactData), typeof(Engine), typeof(bool) })]
+            public static void LegacyUIStyleGetStatusColorPostfix(Contact contact, ContactData status, Engine engine, bool text, ref colorX __result)
             {
-                OnlineStatus onlineStatus = friend.UserStatus?.OnlineStatus ?? OnlineStatus.Offline;
-                if (onlineStatus == OnlineStatus.Offline && friend.FriendStatus == FriendStatus.Accepted && !friend.IsAccepted)
+                OnlineStatus onlineStatus = status.CurrentStatus.OnlineStatus ?? OnlineStatus.Offline;
+                if (onlineStatus == OnlineStatus.Offline && contact.ContactStatus == ContactStatus.Accepted && !contact.IsAccepted)
                 {
-                    __result = color.Yellow;
+                    __result = RadiantUI_Constants.Hero.YELLOW;
                 }
             }
         }
 
         // lower numbers appear earlier in the list
-        private static int GetOrderNumber(Friend friend)
+        private static int GetOrderNumber(ContactItem item)
         {
-            if (friend.FriendStatus == FriendStatus.Requested) // received requests
+            Contact contact = item.Contact;
+            if (contact.ContactStatus == ContactStatus.Requested) // received requests
                 return 0;
-            OnlineStatus status = friend.UserStatus?.OnlineStatus ?? OnlineStatus.Offline;
+            OnlineStatus status = item.Data?.CurrentStatus?.OnlineStatus ?? OnlineStatus.Offline;
             switch (status)
             {
                 case OnlineStatus.Online:
@@ -114,19 +116,23 @@ namespace NeosContactsSort
                     return 2;
                 case OnlineStatus.Busy:
                     return 3;
-                default: // Offline or Invisible
-                    if (friend.FriendStatus == FriendStatus.Accepted && !friend.IsAccepted)
+                default: // Can't tell from status alone (offline/invisible is ambiguous)
+                    if (contact.IsPartiallyMigrated)
+                    {
+                        return 10;
+                    }
+                    else if (contact.ContactStatus == ContactStatus.Accepted && !contact.IsAccepted)
                     { // sent requests
                         return 4;
                     }
-                    else if (friend.FriendStatus != FriendStatus.SearchResult)
+                    else if (contact.ContactStatus != ContactStatus.SearchResult)
                     { // offline or invisible
                         return 5;
                         // unsure how people with no relation, ignored, or blocked will appear... but they'll end up here too
                     }
                     else
                     { // search results always come last
-                        return 6;
+                        return 100;
                     }
             }
         }
