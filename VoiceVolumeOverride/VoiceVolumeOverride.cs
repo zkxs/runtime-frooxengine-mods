@@ -20,7 +20,7 @@ namespace VoiceVolumeOverride
 		public override string Name => "VoiceVolumeOverride";
 		public override string Author => "runtime";
 		public override string Version => VERSION;
-		public override string Link => "https://github.com/zkxs/VoiceVolumeOverride";
+		public override string Link => "https://github.com/zkxs/runtime-frooxengine-mods/VoiceVolumeOverride";
 
 		[AutoRegisterConfigKey]
 		private static readonly ModConfigurationKey<float> VOLUME_MULTIPLIER = new("volume_multiplier", "Voice volume multiplier. Must be between 0 and 100, inclusive.", () => 1.0f, false, (value) => value >= 0 && value <= 100);

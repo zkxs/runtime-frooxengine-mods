@@ -29,7 +29,7 @@ Your Neos directory should now look similar to the following. Files not related 
 ├───nml_mods
 │       InspectorScroll.dll
 │       MotionBlurDisable.dll
-│       NeosContactsSort.dll
+│       ContactsSort.dll
 |       <More mods go here>
 ├───nml_libs
 │       0Harmony.dll

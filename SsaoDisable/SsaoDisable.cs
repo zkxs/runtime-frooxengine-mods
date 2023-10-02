@@ -13,10 +13,11 @@ namespace SsaoDisable
 {
 	public class SsaoDisable : NeosMod
 	{
+		internal const string VERSION = "1.0.2";
 		public override string Name => "SsaoDisable";
 		public override string Author => "runtime";
-		public override string Version => "1.0.2";
-		public override string Link => "https://github.com/zkxs/SsaoDisable";
+		public override string Version => VERSION;
+		public override string Link => "https://github.com/zkxs/runtime-frooxengine-mods/SsaoDisable";
 
 		private static bool _first_trigger = false;
 

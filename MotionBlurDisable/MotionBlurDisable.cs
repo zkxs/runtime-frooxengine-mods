@@ -17,7 +17,7 @@ namespace MotionBlurDisable
 		public override string Name => "MotionBlurDisable";
 		public override string Author => "runtime";
 		public override string Version => VERSION;
-		public override string Link => "https://github.com/zkxs/MotionBlurDisable";
+		public override string Link => "https://github.com/zkxs/runtime-frooxengine-mods/MotionBlurDisable";
 
 		private static bool _first_trigger = false;
 

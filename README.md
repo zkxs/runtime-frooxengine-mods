@@ -4,7 +4,7 @@ This is a collection of my mods for Resonite. See each mod's subdirectory for it
 
 ## Building
 
-- Build individual sub-projects with `dotnet build -c Release .\NeosTrackerIdStabilizer\NeosTrackerIdStabilizer.csproj`
+- Build individual sub-projects with `dotnet build -c Release .\TrackerIdStabilizer\TrackerIdStabilizer.csproj`
 - Build everything with `dotnet build -c Release all-mods.csproj`
 
 ## License
