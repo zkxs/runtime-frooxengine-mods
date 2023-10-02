@@ -23,8 +23,8 @@ namespace NoResetScale
 		public override string Version => VERSION;
 		public override string Link => "https://github.com/zkxs/runtime-frooxengine-mods/NoResetScale";
 
-		private static MethodInfo _startTask;
-		private static MethodInfo _isAtScale;
+		private static MethodInfo? _startTask;
+		private static MethodInfo? _isAtScale;
 
 		public override void OnEngineInit()
 		{
@@ -55,7 +55,7 @@ namespace NoResetScale
 			}
 
 			// constructor for our target async method body
-			MethodInfo asyncMethodConstructor = FindAsyncMethod(PatchProcessor.GetOriginalInstructions(openContextMenu));
+			MethodInfo? asyncMethodConstructor = FindAsyncMethod(PatchProcessor.GetOriginalInstructions(openContextMenu));
 			if (asyncMethodConstructor == null)
 			{
 				Error("Could not find target async block constructor in InteractionHandler.OpenContextMenu(*)");
@@ -85,7 +85,7 @@ namespace NoResetScale
 		}
 
 		// search for StartTask((Func<Task>) (async () => {...})) and grab the async method
-		private static MethodInfo FindAsyncMethod(List<CodeInstruction> instructions)
+		private static MethodInfo? FindAsyncMethod(List<CodeInstruction> instructions)
 		{
 			List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
 			for (int callIdx = 0; callIdx < codes.Count; callIdx++)

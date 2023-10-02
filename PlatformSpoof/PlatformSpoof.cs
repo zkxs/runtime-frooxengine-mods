@@ -18,8 +18,8 @@ namespace PlatformSpoof
 		public override string Version => VERSION;
 		public override string Link => "https://github.com/zkxs/runtime-frooxengine-mods/PlatformSpoof";
 
-		private static FieldInfo _userInitializingEnabled;
-		private static ModConfiguration _config;
+		private static FieldInfo? _userInitializingEnabled;
+		private static ModConfiguration? _config;
 
 		[AutoRegisterConfigKey]
 		private static readonly ModConfigurationKey<bool> ENABLED = new ModConfigurationKey<bool>("enabled", "Enable platform spoofing in new sessions you join", () => true);
@@ -56,7 +56,7 @@ namespace PlatformSpoof
 		{
 			private static void Prefix(ref SyncMessage message)
 			{
-				if (_config.GetValue(ENABLED) && message is ControlMessage controlMessage && controlMessage.ControlMessageType == ControlMessage.Message.JoinRequest)
+				if (_config!.GetValue(ENABLED) && message is ControlMessage controlMessage && controlMessage.ControlMessageType == ControlMessage.Message.JoinRequest)
 				{
 					Platform oldPlatform = Platform.Other;
 					if (controlMessage.Data.TryExtract("Platform", ref oldPlatform))
@@ -74,12 +74,12 @@ namespace PlatformSpoof
 		{
 			private static void Postfix(ref User __result)
 			{
-				if (_config.GetValue(ENABLED))
+				if (_config!.GetValue(ENABLED))
 				{
 					Platform oldPlatform = __result.Platform;
-					bool oldInitializingEnabled = (bool)_userInitializingEnabled.GetValue(__result);
+					bool oldInitializingEnabled = (bool)_userInitializingEnabled!.GetValue(__result);
 					_userInitializingEnabled.SetValue(__result, true);
-					__result.Platform = _config.GetValue(TARGET_PLATFORM);
+					__result.Platform = _config!.GetValue(TARGET_PLATFORM);
 					_userInitializingEnabled.SetValue(__result, oldInitializingEnabled);
 					Msg($"spoofed host platform from {oldPlatform} to {__result.Platform}");
 				}
