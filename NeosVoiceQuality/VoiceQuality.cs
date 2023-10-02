@@ -1,6 +1,6 @@
 ﻿//#define DEBUG_SPAM // enable this for incredible debug spam
 
-using CodeX;
+using Elements.Assets;
 using FrooxEngine;
 using HarmonyLib;
 using NeosModLoader;
@@ -59,7 +59,7 @@ namespace VoiceQuality
             // if we ever have multiple non-opus keys I'll need to switch this to set.contains() call
             return !KEY_AUTO_SET_NEW_USERS.Equals(configKey);
         }
-        
+
         public override void DefineConfiguration(ModConfigurationDefinitionBuilder builder)
         {
             builder
