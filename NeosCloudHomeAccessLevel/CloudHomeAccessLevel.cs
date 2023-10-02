@@ -1,7 +1,7 @@
 ﻿//#define DEBUG_SPAM // enable this for incredible debug spam
 
 using Elements.Core;
-using CloudX.Shared;
+using SkyFrost.Base;
 using FrooxEngine;
 using HarmonyLib;
 using NeosModLoader;
@@ -98,8 +98,8 @@ namespace CloudHomeAccessLevel
              * IL_0179: ldc.i4.0
              * IL_017a: br.s         IL_017d
              * IL_017c: ldc.i4.1
-             * IL_017d: newobj       instance void valuetype [mscorlib]System.Nullable`1<valuetype [CloudX.Shared]CloudX.Shared.SessionAccessLevel>::.ctor(!0)
-             * IL_0182: stfld        valuetype [mscorlib]System.Nullable`1<valuetype [CloudX.Shared]CloudX.Shared.SessionAccessLevel> FrooxEngine.WorldStartSettings::DefaultAccessLevel
+             * IL_017d: newobj       instance void valuetype [mscorlib]System.Nullable`1<valuetype [SkyFrost.Base]SkyFrost.Base.SessionAccessLevel>::.ctor(!0)
+             * IL_0182: stfld        valuetype [mscorlib]System.Nullable`1<valuetype [SkyFrost.Base]SkyFrost.Base.SessionAccessLevel> FrooxEngine.WorldStartSettings::DefaultAccessLevel
              *
              * That code is checking if Userspace.AnnounceHomeOnLAN() is true, and if so it's loading SessionAccessLevel.LAN onto the stack.
              * Otherwise, it's loading SessionAccessLevel.Private onto the stack.
