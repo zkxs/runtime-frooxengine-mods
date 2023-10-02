@@ -86,7 +86,7 @@ namespace ContactsSort
 						Contact? contact = component?.Contact;
 						if (contact != null)
 						{
-							Debug($"  {GetOrderNumber(component)}: \"{contact.ContactUsername}\" status={contact.ContactStatus} online={contact.ContactStatus?.OnlineStatus} incoming={contact.IsAccepted}");
+							Debug($"  {GetOrderNumber(component!)}: \"{contact.ContactUsername}\" status={contact?.ContactStatus} online={component?.Data?.CurrentStatus?.OnlineStatus} incoming={contact.IsAccepted}");
 						}
 					}
 #endif
