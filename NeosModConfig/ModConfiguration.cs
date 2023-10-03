@@ -2,9 +2,6 @@
 // See LICENSE.txt file for full text.
 // Copyright © 2023 Michael Ripley & Neos Modding Group contributors.
 
-using FrooxEngine;
-using HarmonyLib;
-using NeosModConfig.JsonConverters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
