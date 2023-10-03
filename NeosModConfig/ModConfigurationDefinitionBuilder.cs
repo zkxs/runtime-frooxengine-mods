@@ -15,12 +15,13 @@ namespace NeosModConfig
 	/// </summary>
 	public class ModConfigurationDefinitionBuilder
 	{
-		private readonly NeosModBase Owner;
+		private readonly string Owner;
 		private Version ConfigVersion = new(1, 0, 0);
 		private readonly HashSet<ModConfigurationKey> Keys = new();
 		private bool AutoSaveConfig = true;
+		private Func<Version, Version, IncompatibleConfigurationHandlingOption> ConfigIncompatibleVersionHandler = HandleIncompatibleConfigurationVersions;
 
-		internal ModConfigurationDefinitionBuilder(NeosModBase owner)
+		internal ModConfigurationDefinitionBuilder(string owner)
 		{
 			Owner = owner;
 		}
@@ -69,6 +70,17 @@ namespace NeosModConfig
 			return this;
 		}
 
+		/// <summary>
+		/// Sets the incompatible version handler for this configuration definition. Default is <c>IncompatibleConfigurationHandlingOption.ERROR</c> for all incompatibilities.
+		/// </summary>
+		/// <param name="incompatibleVersionHandler">A function that given <c>serializedVersion</c> and <c>definedVersion</c> returns your desired handling for the incompatibility.</param>
+		/// <returns>This builder.</returns>
+		public ModConfigurationDefinitionBuilder IncompatibleVersionHandler(Func<Version, Version, IncompatibleConfigurationHandlingOption> incompatibleVersionHandler)
+		{
+			ConfigIncompatibleVersionHandler = incompatibleVersionHandler;
+			return this;
+		}
+
 		internal void ProcessAttributes()
 		{
 			var fields = AccessTools.GetDeclaredFields(Owner.GetType());
@@ -82,7 +94,7 @@ namespace NeosModConfig
 			if (!typeof(ModConfigurationKey).IsAssignableFrom(field.FieldType))
 			{
 				// wrong type
-				Logger.WarnInternal($"{Owner.Name} had an [AutoRegisterConfigKey] field of the wrong type: {field}");
+				Plugin.Log!.LogWarning($"{Owner} had an [AutoRegisterConfigKey] field of the wrong type: {field}");
 				return;
 			}
 
@@ -90,11 +102,22 @@ namespace NeosModConfig
 			Keys.Add(fieldValue);
 		}
 
+		/// <summary>
+		/// Default handling of incompatible configuration versions
+		/// </summary>
+		/// <param name="serializedVersion">Configuration version read from the config file</param>
+		/// <param name="definedVersion">Configuration version defined in the mod code</param>
+		/// <returns></returns>
+		private static IncompatibleConfigurationHandlingOption HandleIncompatibleConfigurationVersions(Version serializedVersion, Version definedVersion)
+		{
+			return IncompatibleConfigurationHandlingOption.ERROR;
+		}
+
 		internal ModConfigurationDefinition? Build()
 		{
 			if (Keys.Count > 0)
 			{
-				return new ModConfigurationDefinition(Owner, ConfigVersion, Keys, AutoSaveConfig);
+				return new ModConfigurationDefinition(Owner, ConfigVersion, Keys, AutoSaveConfig, ConfigIncompatibleVersionHandler);
 			}
 			return null;
 		}

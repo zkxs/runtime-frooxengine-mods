@@ -6,7 +6,7 @@
 		<TargetFramework>net462</TargetFramework>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<FileAlignment>512</FileAlignment>
-		<LangVersion>9.0</LangVersion>
+		<LangVersion>11.0</LangVersion>
 		<BaseOutputPath>../bin</BaseOutputPath>
 		<Nullable>enable</Nullable>
 		<Deterministic>true</Deterministic>

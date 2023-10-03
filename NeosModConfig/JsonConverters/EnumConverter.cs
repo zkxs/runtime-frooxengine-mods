@@ -21,7 +21,7 @@ namespace NeosModConfig.JsonConverters
 			Type underlyingType = Enum.GetUnderlyingType(objectType);
 			if (TryConvert(reader!.Value!, underlyingType, out object? deserialized))
 			{
-				Logger.DebugFuncInternal(() => $"Deserializing an Elements.Core type: {objectType} from a {reader!.Value!.GetType()}");
+				Plugin.Log!.LogDebug($"Deserializing an Elements.Core type: {objectType} from a {reader!.Value!.GetType()}");
 				return deserialized!;
 			}
 

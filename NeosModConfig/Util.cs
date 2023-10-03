@@ -129,7 +129,7 @@ namespace NeosModConfig
 			}
 			catch (Exception e)
 			{
-				Logger.DebugFuncInternal(() => $"Could not read the name for a type: {e}");
+				Plugin.Log!.LogDebug($"Could not read the name for a type: {e}");
 				return false;
 			}
 
@@ -139,7 +139,7 @@ namespace NeosModConfig
 			}
 			catch (Exception e)
 			{
-				Logger.DebugFuncInternal(() => $"Could not load type \"{type}\": {e}");
+				Plugin.Log!.LogDebug($"Could not load type \"{type}\": {e}");
 				return false;
 			}
 		}
