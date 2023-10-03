@@ -1,11 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNamespace>NeosModLoader</RootNamespace>
-		<AssemblyName>NeosModLoader</AssemblyName>
-		<AssemblyTitle>NeosModLoaderHeadless</AssemblyTitle>
+		<RootNamespace>NeosModConfig</RootNamespace>
+		<AssemblyName>NeosModConfig</AssemblyName>
+		<AssemblyTitle>NeosModConfigHeadless</AssemblyTitle>
 		<AssemblyFileName>$(AssemblyTitle).dll</AssemblyFileName>
-		<CopyToMods>false</CopyToMods>
 	</PropertyGroup>
 
 	<ItemGroup>

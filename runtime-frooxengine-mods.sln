@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocomotionRename", "Locomot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeosModLoader", "NeosModLoader\NeosModLoader.csproj", "{07063C13-2C3A-4558-A7FC-086681ACEFAF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeosModConfig", "NeosModConfig\NeosModConfig.csproj", "{07063C13-2C3A-4558-A7FC-086681ACEFAE}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionBlurDisable", "MotionBlurDisable\MotionBlurDisable.csproj", "{67C34881-4602-4CDF-A757-A12062541BB6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoResetScale", "NoResetScale\NoResetScale.csproj", "{323B5B07-7F27-426C-81E6-FAE29BAE77B1}"
@@ -53,6 +55,10 @@ Global
 		{07063C13-2C3A-4558-A7FC-086681ACEFAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07063C13-2C3A-4558-A7FC-086681ACEFAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07063C13-2C3A-4558-A7FC-086681ACEFAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07063C13-2C3A-4558-A7FC-086681ACEFAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07063C13-2C3A-4558-A7FC-086681ACEFAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07063C13-2C3A-4558-A7FC-086681ACEFAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07063C13-2C3A-4558-A7FC-086681ACEFAE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDC53C94-8407-4E3D-AE30-80750FDC4929}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EDC53C94-8407-4E3D-AE30-80750FDC4929}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDC53C94-8407-4E3D-AE30-80750FDC4929}.Release|Any CPU.ActiveCfg = Release|Any CPU

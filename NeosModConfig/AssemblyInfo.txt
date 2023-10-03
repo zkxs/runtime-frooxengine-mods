@@ -1,0 +1,12 @@
+using System.ComponentModel;
+using System.Reflection;
+using System.Runtime.InteropServices;
+
+[assembly: AssemblyTitle("NeosModConfig")]
+[assembly: AssemblyProduct("NeosModConfig")]
+[assembly: AssemblyCompany("Runtime Evil Inc.")]
+[assembly: AssemblyCopyright("Copyright © 2023")]
+[assembly: AssemblyDescription("")]
+[assembly: ComVisible(false)]
+[assembly: AssemblyVersion(NeosModConfig.MyPluginInfo.PLUGIN_VERSION)]
+[assembly: AssemblyFileVersion(NeosModConfig.MyPluginInfo.PLUGIN_VERSION)]
