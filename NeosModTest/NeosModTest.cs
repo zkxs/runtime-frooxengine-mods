@@ -36,7 +36,7 @@ namespace NeosModConfigurationExample
             Debug($"type: {type}");
             
             // get the method
-            MethodInfo original = AccessTools.DeclaredMethod(type, nameof(DiscordPlatformConnector.Initialize));
+            MethodInfo original = AccessTools.DeclaredMethod(type, nameof(DiscordPlatformConnector.ReadyCallback));
             if (original == null)
             {
                 Error("original is null");
