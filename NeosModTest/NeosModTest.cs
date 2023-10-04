@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace NeosModConfigurationExample
 {
@@ -13,7 +14,10 @@ namespace NeosModConfigurationExample
 		public override string Name => "NeosModTest";
 		public override string Author => "runtime";
 		public override string Version => "1.0.0";
-		public override string Link => "https://github.com/zkxs/NeosModTest";
+		public override string Link => "https://github.com/zkxs/NeosModConfigurationExample";
+
+		[AutoRegisterConfigKey]
+		private readonly ModConfigurationKey<bool> KEY_ENABLE = new ModConfigurationKey<bool>("enabled", "Enables the NeosModTest mod", () => true);
 
 		// this override lets us change optional settings in our configuration definition
 		public override void DefineConfiguration(ModConfigurationDefinitionBuilder builder)
@@ -25,93 +29,59 @@ namespace NeosModConfigurationExample
 
 		public override void OnEngineInit()
 		{
+			// disable the mod if the enabled config has been set to false
+			ModConfiguration config = GetConfiguration();
+			if (!config.GetValue(KEY_ENABLE)) // this is safe as the config has a default value
+			{
+				Debug("Mod disabled, returning early.");
+				return;
+			}
+
 			Harmony harmony = new Harmony("dev.zkxs.neosmodtest");
-			PatchSomething(harmony);
+			patchSlideGrabbed(harmony);
 		}
-		private static void PatchSomething(Harmony harmony)
+		private static void patchSlideGrabbed(Harmony harmony)
 		{
-			Harmony.DEBUG = true;
-
-			Type type = typeof(DiscordPlatformConnector);
-			Debug($"type: {type}");
-
-			// get the method
-			MethodInfo original = AccessTools.DeclaredMethod(type, nameof(DiscordPlatformConnector.ReadyCallback));
+			MethodInfo original = AccessTools.DeclaredMethod(typeof(CommonTool), "SlideGrabbed", new Type[] { typeof(float), typeof(float) });
 			if (original == null)
 			{
 				Error("original is null");
 				return;
 			}
-			MethodInfo patch = AccessTools.DeclaredMethod(typeof(NeosModTest), nameof(DebugPostfix));
-			if (patch == null)
+
+			MethodInfo transpiler = AccessTools.DeclaredMethod(typeof(NeosModTest), nameof(SlideGrabbedTranspiler));
+			if (transpiler == null)
 			{
-				Error("patch is null, which means I really fucked up");
+				Error("transpiler is null");
 				return;
 			}
 
-			harmony.Patch(original, postfix: new HarmonyMethod(patch));
-			Debug($"Method [{type} :: {original}] patched!");
-
-
-			Harmony.DEBUG = false;
+			harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
+			Debug("Method \"SlideGrabbed\" patched!");
 		}
 
-		private static IEnumerable<CodeInstruction> DoNothingTranspiler(IEnumerable<CodeInstruction> instructions)
+		private static IEnumerable<CodeInstruction> SlideGrabbedTranspiler(IEnumerable<CodeInstruction> instructions)
 		{
-			Msg("DoNothingTranspiler has run");
 			var codes = new List<CodeInstruction>(instructions);
-
 			for (int i = 0; i < codes.Count; i++)
 			{
+				if (codes[i].opcode == OpCodes.Stloc_2 && codes[i + 1].opcode == OpCodes.Ldarg_0 && codes[i + 2].opcode == OpCodes.Ldloc_2 && codes[i + 3].opcode == OpCodes.Ldarg_0 && codes[i + 4].opcode == OpCodes.Call && ((MethodInfo)codes[i + 4].operand == typeof(Worker).GetMethod("get_InputInterface")) && codes[i + 5].opcode == OpCodes.Callvirt && ((MethodInfo)codes[i + 5].operand == typeof(InputInterface).GetMethod("get_VR_Active")) && codes[i + 6].opcode == OpCodes.Brtrue_S)
+				{
+					codes[i + 3].opcode = OpCodes.Nop;  //Nop loading base reference onto stack
+					codes[i + 4].opcode = OpCodes.Nop;  //Nop call to get InputInterface instance, that would use the base refernce
+					codes[i + 5].opcode = OpCodes.Nop;  //Nop callvirt for VR_Active getter
+					codes[i + 6].opcode = OpCodes.Br_S;  //Exchange jump on true for unconditional jump
+				}
 
-
-				Debug($"{i}: {codes[i]}");
+				if (codes[i].opcode == OpCodes.Ldloc_2 && codes[i + 1].opcode == OpCodes.Ldc_R4 && codes[i + 2].opcode == OpCodes.Bge_Un && codes[i + 3].opcode == OpCodes.Ldarg_0 && codes[i + 4].opcode == OpCodes.Call && ((MethodInfo)codes[i + 4].operand == typeof(Worker).GetMethod("get_InputInterface")) && codes[i + 5].opcode == OpCodes.Callvirt && ((MethodInfo)codes[i + 5].operand == typeof(InputInterface).GetMethod("get_VR_Active")) && codes[i + 6].opcode == OpCodes.Brfalse)
+				{
+					codes[i + 3].opcode = OpCodes.Nop;  //Nop loading base reference onto stack
+					codes[i + 4].opcode = OpCodes.Nop;  //Nop call to get InputInterface instance, that would use the base refernce
+					codes[i + 5].opcode = OpCodes.Nop;  //Nop callvirt for VR_Active getter
+					codes[i + 6].opcode = OpCodes.Nop;  //Nop the jump on false
+				}
 			}
-
 			return codes.AsEnumerable();
-		}
-
-		private static void DoNothingPostfix()
-		{
-			Warn("DoNothingPostFix has run");
-		}
-
-		private static void DebugPostfix(object[] __args)
-		{
-			if (__args != null)
-			{
-				IEnumerable<string> argData = __args.Select(arg => $"{arg?.GetType()}: {arg}");
-				Msg($"DebugPostfix has run with args [{string.Join(", ", argData)}]");
-			}
-			else
-			{
-				Warn($"DebugPostfix has run with args NULL");
-			}
-		}
-
-		private static void LogMatchingTypes()
-		{
-			Type genericType = typeof(DynamicVariableSpace.ValueManager<>);
-			Msg($"Logging types matching {genericType}:");
-
-			IEnumerable<Type> types = AppDomain.CurrentDomain.GetAssemblies()
-				.SelectMany(assembly => assembly.GetTypes())
-				.Where(type => type.IsGenericType)
-				.Where(type => genericType.Equals(type.GetGenericTypeDefinition()));
-
-			foreach (Type type in types)
-			{
-				Msg($"Type matching {genericType}: {type}");
-			}
-		}
-
-		private static void LogAssemblies()
-		{
-			Debug("Assembly list:");
-			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-			{
-				Debug($"- {assembly}");
-			}
 		}
 	}
 }
