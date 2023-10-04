@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoiceVolumeOverride", "Voic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeosModTest", "NeosModTest\NeosModTest.csproj", "{F0037EA4-94CE-407C-98DC-EA30E8750626}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeosModConfigurationExample", "NeosModConfigurationExample\NeosModConfigurationExample.csproj", "{F0037EA4-94CE-407C-98DC-EA30E8750627}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{F0037EA4-94CE-407C-98DC-EA30E8750626}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0037EA4-94CE-407C-98DC-EA30E8750626}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0037EA4-94CE-407C-98DC-EA30E8750626}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0037EA4-94CE-407C-98DC-EA30E8750627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0037EA4-94CE-407C-98DC-EA30E8750627}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0037EA4-94CE-407C-98DC-EA30E8750627}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0037EA4-94CE-407C-98DC-EA30E8750627}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

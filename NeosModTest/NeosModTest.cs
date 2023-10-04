@@ -15,9 +15,10 @@ namespace NeosModConfigurationExample
 {
 	public class NeosModTest : NeosMod
 	{
+		internal const string VERSION = "1.0.0";
 		public override string Name => "NeosModTest";
 		public override string Author => "runtime";
-		public override string Version => "1.0.0";
+		public override string Version => VERSION;
 		public override string Link => "https://github.com/zkxs/NeosModConfigurationExample";
 
 		[AutoRegisterConfigKey]
