@@ -1,3 +1,7 @@
+// This file is part of MotionBlurDisable and is licensed under the MIT No Attribution License.
+// See LICENSE.txt file for full text.
+// Copyright © 2023 Michael Ripley
+
 using FrooxEngine;
 using HarmonyLib;
 using NeosModLoader;
