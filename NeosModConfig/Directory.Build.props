@@ -1,4 +1,5 @@
 <Project>
+	<!-- This arcane spell makes this file load the Directory.Build.props in the parent directory as well. -->
 	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 	<PropertyGroup>
 		<AssemblyName>Example.Plugin</AssemblyName>

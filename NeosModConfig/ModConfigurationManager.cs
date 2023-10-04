@@ -56,6 +56,7 @@ namespace NeosModConfig
 
 		internal static string GetModConfigPath(string owner)
 		{
+			//TODO: make sure characters that Windows will throw a fit over get filtered out.
 			return Path.Combine(ConfigDirectory, owner, ".json");
 		}
 
